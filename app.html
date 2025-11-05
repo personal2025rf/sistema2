@@ -52,10 +52,12 @@
             background: var(--background);
             min-height: 100vh;
             color: var(--foreground);
+            overflow-x: hidden;
         }
 
         .app-container {
             min-height: 100vh;
+            width: 100%;
         }
 
         .navbar {
@@ -70,12 +72,22 @@
             justify-content: space-between;
             align-items: center;
             border-bottom: 1px solid var(--border);
+            flex-wrap: wrap;
+            gap: 15px;
         }
 
         .navbar-brand {
             font-size: 24px;
             font-weight: bold;
             color: var(--primary);
+            white-space: nowrap;
+        }
+
+        .navbar-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
         }
 
         .navbar-btn {
@@ -86,10 +98,8 @@
             cursor: pointer;
             font-weight: bold;
             transition: background 0.3s;
-        }
-
-        .navbar-btn + .navbar-btn {
-            margin-left: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .btn-blue {
@@ -109,12 +119,15 @@
             cursor: pointer;
             font-weight: bold;
             margin-right: 10px;
+            flex-shrink: 0;
         }
 
         .user-info {
             display: flex;
             align-items: center;
             gap: 15px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
         }
 
         .profile-pic {
@@ -124,6 +137,7 @@
             object-fit: cover;
             border: 2px solid var(--primary);
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         .profile-pic-placeholder {
@@ -137,11 +151,13 @@
             color: var(--primary-foreground);
             font-weight: bold;
             cursor: pointer;
+            flex-shrink: 0;
         }
 
         .welcome-message {
             color: var(--foreground);
             font-weight: 600;
+            white-space: nowrap;
         }
 
         .logout-btn {
@@ -153,6 +169,8 @@
             cursor: pointer;
             font-weight: bold;
             transition: background 0.3s;
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .logout-btn:hover {
@@ -162,6 +180,7 @@
         .main-content {
             display: flex;
             min-height: calc(100vh - 80px);
+            width: 100%;
         }
 
         .sidebar {
@@ -169,10 +188,15 @@
             background: var(--sidebar);
             backdrop-filter: blur(10px);
             padding: 20px 0;
-            transition: width 0.3s ease;
+            transition: all 0.3s ease;
             box-shadow: 2px 0 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             border-right: 1px solid var(--sidebar-border);
+            position: fixed;
+            height: calc(100vh - 80px);
+            z-index: 999;
+            left: 0;
+            top: 80px;
         }
 
         .sidebar.expanded {
@@ -185,10 +209,12 @@
 
         .sidebar-menu {
             list-style: none;
+            width: 100%;
         }
 
         .sidebar-menu li {
             margin-bottom: 5px;
+            width: 100%;
         }
 
         .sidebar-menu a {
@@ -200,6 +226,7 @@
             transition: all 0.3s;
             border-left: 4px solid transparent;
             cursor: pointer;
+            width: 100%;
         }
 
         .sidebar-menu a:hover {
@@ -212,6 +239,7 @@
             font-size: 20px;
             min-width: 30px;
             text-align: center;
+            flex-shrink: 0;
         }
 
         .sidebar-menu .text {
@@ -219,6 +247,7 @@
             white-space: nowrap;
             opacity: 0;
             transition: opacity 0.3s;
+            overflow: hidden;
         }
 
         .sidebar.expanded .sidebar-menu .text {
@@ -230,10 +259,19 @@
             padding: 0;
             background: var(--background);
             position: relative;
+            margin-left: 70px;
+            transition: margin-left 0.3s ease;
+            width: calc(100% - 70px);
+        }
+
+        .sidebar.expanded + .content-area {
+            margin-left: 280px;
+            width: calc(100% - 280px);
         }
 
         .welcome-screen {
             padding: 40px;
+            width: 100%;
         }
 
         .welcome-card {
@@ -244,6 +282,7 @@
             text-align: center;
             margin-bottom: 30px;
             border: 1px solid var(--border);
+            width: 100%;
         }
 
         .welcome-card h1 {
@@ -260,10 +299,11 @@
 
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 25px;
             margin-top: 30px;
             justify-content: center;
+            width: 100%;
         }
 
         @media (min-width: 1200px) {
@@ -280,6 +320,7 @@
             transition: transform 0.3s, box-shadow 0.3s;
             cursor: pointer;
             border: 1px solid var(--border);
+            width: 100%;
         }
 
         .feature-card:hover {
@@ -334,12 +375,16 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            width: 100%;
         }
 
         .iframe-title {
             font-size: 18px;
             font-weight: bold;
             color: var(--card-foreground);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .close-iframe {
@@ -350,6 +395,7 @@
             border-radius: calc(var(--radius) - 0.5rem);
             cursor: pointer;
             font-weight: bold;
+            flex-shrink: 0;
         }
 
         .close-iframe:hover {
@@ -362,15 +408,63 @@
             border: none;
         }
 
-        @media (max-width: 768px) {
+        /* Mejoras responsivas */
+        @media (max-width: 1200px) {
+            .navbar {
+                padding: 12px 15px;
+            }
+            
+            .navbar-brand {
+                font-size: 20px;
+            }
+            
+            .cards-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (max-width: 992px) {
+            .navbar {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .navbar-buttons {
+                width: 100%;
+                justify-content: flex-start;
+            }
+            
+            .user-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+            
+            .content-area {
+                margin-left: 0;
+                width: 100%;
+            }
+            
             .sidebar {
-                position: fixed;
-                left: 0;
-                top: 80px;
-                height: calc(100vh - 80px);
-                z-index: 999;
                 transform: translateX(-100%);
                 width: 280px;
+            }
+            
+            .sidebar.expanded {
+                transform: translateX(0);
+            }
+            
+            .sidebar.expanded + .content-area {
+                margin-left: 0;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                height: calc(100vh - 80px);
+                z-index: 999;
             }
 
             .sidebar.show {
@@ -382,7 +476,7 @@
             }
 
             .content-area {
-                padding: 20px;
+                padding: 0;
             }
 
             .welcome-screen {
@@ -409,6 +503,16 @@
             .welcome-message {
                 display: none;
             }
+            
+            .navbar-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .navbar-btn {
+                width: 100%;
+                text-align: center;
+            }
         }
 
         @media (max-width: 480px) {
@@ -417,7 +521,7 @@
             }
 
             .navbar-brand {
-                font-size: 20px;
+                font-size: 18px;
             }
 
             .welcome-screen {
@@ -430,6 +534,34 @@
 
             .feature-card {
                 padding: 20px;
+            }
+            
+            .iframe-header {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+            
+            .iframe-title {
+                font-size: 16px;
+            }
+        }
+
+        @media (max-width: 360px) {
+            .navbar-brand {
+                font-size: 16px;
+            }
+            
+            .welcome-card h1 {
+                font-size: 20px;
+            }
+            
+            .welcome-card p {
+                font-size: 16px;
+            }
+            
+            .feature-card {
+                padding: 15px;
             }
         }
 
@@ -506,6 +638,21 @@
         .btn:hover {
             background: oklch(0.62 0.17 244.9955);
         }
+        
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 998;
+        }
+        
+        .overlay.active {
+            display: block;
+        }
     </style>
 </head>
 <body>
@@ -515,7 +662,7 @@
                 <button class="navbar-toggle" onclick="toggleSidebar()">☰</button>
                 <div class="navbar-brand">Sistema Defensoría Civil y Comercial 6</div>
             </div>
-            <div>
+            <div class="navbar-buttons">
                 <button class="navbar-btn btn-blue" onclick="openIframe('Sistema Operador', 'https://personal2025rf.github.io/operador/')">Sistema Operador</button>
                 <button class="navbar-btn btn-blue" onclick="openIframe('Estadistica Sistema', 'https://personal2025rf.github.io/reporte/')">Estadisticas</button>
                 <button class="navbar-btn btn-blue" onclick="openIframe('Agenda Defensor', 'https://defensorialocal-seis.github.io/agenda/')">Agenda Defensor</button>
@@ -530,6 +677,8 @@
                 <button class="logout-btn" onclick="logoutUser()">Cerrar Sesión</button>
             </div>
         </nav>
+
+        <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
         <div class="main-content">
             <aside class="sidebar" id="sidebar">
@@ -744,11 +893,22 @@
     <script>
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
-            if (window.innerWidth <= 768) {
-                sidebar.classList.toggle('show');
+            const overlay = document.getElementById('overlay');
+            
+            if (window.innerWidth <= 992) {
+                sidebar.classList.toggle('expanded');
+                overlay.classList.toggle('active');
             } else {
                 sidebar.classList.toggle('expanded');
             }
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            
+            sidebar.classList.remove('expanded');
+            overlay.classList.remove('active');
         }
 
         function loadPage(url, title) {
@@ -763,9 +923,8 @@
             iframe.src = url;
             iframeTitle.textContent = title;
             
-            if (window.innerWidth <= 768) {
-                const sidebar = document.getElementById('sidebar');
-                sidebar.classList.remove('show');
+            if (window.innerWidth <= 992) {
+                closeSidebar();
             }
         }
 
@@ -781,6 +940,10 @@
 
             const iframe = document.getElementById("contentIframe");
             iframe.src = url;
+            
+            if (window.innerWidth <= 992) {
+                closeSidebar();
+            }
         }
 
         function openIframe(title, url) {
@@ -824,18 +987,22 @@
             const sidebar = document.getElementById('sidebar');
             const toggleBtn = document.querySelector('.navbar-toggle');
             
-            if (window.innerWidth <= 768 && 
+            if (window.innerWidth <= 992 && 
                 !sidebar.contains(event.target) && 
                 !toggleBtn.contains(event.target) && 
-                sidebar.classList.contains('show')) {
-                sidebar.classList.remove('show');
+                sidebar.classList.contains('expanded')) {
+                closeSidebar();
             }
         });
 
         window.addEventListener('resize', function() {
             const sidebar = document.getElementById('sidebar');
-            if (window.innerWidth > 768) {
-                sidebar.classList.remove('show');
+            const overlay = document.getElementById('overlay');
+            
+            if (window.innerWidth > 992) {
+                overlay.classList.remove('active');
+            } else if (window.innerWidth <= 992 && sidebar.classList.contains('expanded')) {
+                overlay.classList.add('active');
             }
         });
     </script>
