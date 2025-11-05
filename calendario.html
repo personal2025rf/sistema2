@@ -538,6 +538,49 @@
       margin-top: 2px;
     }
 
+    /* Resumen del mes */
+    .month-stats {
+      background: var(--bg-content);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      margin-top: 16px;
+    }
+
+    .month-stats h3 {
+      font-size: 16px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text-primary);
+    }
+
+    .stats-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .stats-table th,
+    .stats-table td {
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .stats-table th {
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .stats-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .stats-count {
+      font-weight: 600;
+      text-align: right;
+    }
+
     /* Modal de detalles de causa */
     .modal {
       position: fixed;
@@ -603,7 +646,7 @@
         flex-direction: row;
         flex-wrap: wrap;
       }
-      .mini-calendar, .today-events {
+      .mini-calendar, .today-events, .month-stats {
         flex: 1;
         min-width: 280px;
       }
@@ -664,6 +707,13 @@
       }
       .stat-label {
         font-size: 10px;
+      }
+      .month-stats {
+        padding: 12px;
+      }
+      .stats-table th,
+      .stats-table td {
+        padding: 6px 8px;
       }
     }
 
@@ -764,6 +814,37 @@
         <h3>Eventos de Hoy</h3>
         <div class="event-list" id="todayEventsList"></div>
       </div>
+      
+      <!-- Nueva sección: Resumen del mes -->
+      <div class="month-stats">
+        <h3>Resumen del Mes</h3>
+        <table class="stats-table">
+          <thead>
+            <tr>
+              <th>Tipo</th>
+              <th class="stats-count">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Audiencias</td>
+              <td class="stats-count" id="month-audiencia">0</td>
+            </tr>
+            <tr>
+              <td>Cámara Gesell</td>
+              <td class="stats-count" id="month-gesel">0</td>
+            </tr>
+            <tr>
+              <td>Vencimientos</td>
+              <td class="stats-count" id="month-vencimiento">0</td>
+            </tr>
+            <tr>
+              <td>Recursos</td>
+              <td class="stats-count" id="month-recurso">0</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
@@ -835,6 +916,12 @@
     const countGesel = document.getElementById('count-gesel');
     const countVencimiento = document.getElementById('count-vencimiento');
     const countRecurso = document.getElementById('count-recurso');
+    
+    // Elementos para la tabla de resumen del mes
+    const monthAudiencia = document.getElementById('month-audiencia');
+    const monthGesel = document.getElementById('month-gesel');
+    const monthVencimiento = document.getElementById('month-vencimiento');
+    const monthRecurso = document.getElementById('month-recurso');
 
     // Inicializar
     document.addEventListener('DOMContentLoaded', () => {
@@ -913,6 +1000,7 @@
         });
         
         updateStatsCards();
+        updateMonthStats();
         renderAll();
       }, (error) => {
         console.error("Error cargando causas:", error);
@@ -953,6 +1041,7 @@
           }
         ];
         updateStatsCards();
+        updateMonthStats();
         renderAll();
       });
     }
@@ -976,6 +1065,43 @@
       countGesel.textContent = counts.gesel;
       countVencimiento.textContent = counts.vencimiento;
       countRecurso.textContent = counts.recurso;
+    }
+    
+    // Actualizar la tabla de resumen del mes
+    function updateMonthStats() {
+      const year = currentDate.getFullYear();
+      const month = currentDate.getMonth();
+      
+      // Obtener el primer y último día del mes actual
+      const firstDay = new Date(year, month, 1);
+      const lastDay = new Date(year, month + 1, 0);
+      
+      // Inicializar contadores
+      const counts = {
+        audiencia: 0,
+        gesel: 0,
+        vencimiento: 0,
+        recurso: 0
+      };
+      
+      // Filtrar eventos del mes actual
+      const filtered = getFilteredEvents();
+      
+      filtered.forEach(event => {
+        const eventDate = parseDate(event.date);
+        // Verificar si el evento está en el mes actual
+        if (eventDate.getMonth() === month && eventDate.getFullYear() === year) {
+          if (counts.hasOwnProperty(event.type)) {
+            counts[event.type]++;
+          }
+        }
+      });
+      
+      // Actualizar la tabla
+      monthAudiencia.textContent = counts.audiencia;
+      monthGesel.textContent = counts.gesel;
+      monthVencimiento.textContent = counts.vencimiento;
+      monthRecurso.textContent = counts.recurso;
     }
 
     function setupEventListeners() {
@@ -1317,6 +1443,7 @@
       renderMainCalendar();
       renderMiniCalendar();
       renderTodayEvents();
+      updateMonthStats();
     }
 
     function renderMainCalendar() {
