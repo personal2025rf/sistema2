@@ -7,6 +7,8 @@
     
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     
     <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -366,6 +368,40 @@
         .estado-proceso { background-color: var(--status-warning); }
         .estado-cerrado { background-color: var(--status-danger); }
 
+        /* Acciones con iconos */
+        .action-buttons-table {
+            display: flex;
+            gap: 6px;
+            justify-content: center;
+        }
+
+        .btn-icon {
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-view {
+            background-color: var(--status-info);
+            color: white;
+        }
+
+        .btn-edit {
+            background-color: var(--status-warning);
+            color: white;
+        }
+
+        .btn-icon:hover {
+            opacity: 0.8;
+            transform: scale(1.05);
+        }
+
         /* Paginación */
         #paginacion-container {
             display: flex;
@@ -376,6 +412,8 @@
             background: var(--background-card);
             border-radius: var(--border-radius-default);
             box-shadow: var(--shadow-subtle);
+            flex-wrap: wrap;
+            gap: 15px;
         }
         #paginacion-container .page-info {
             font-size: var(--body-regular-size);
@@ -385,6 +423,39 @@
         #paginacion-container .nav-buttons {
             display: flex;
             gap: var(--spacing-s);
+            align-items: center;
+        }
+
+        .pagination-numbers {
+            display: flex;
+            gap: 5px;
+            overflow-x: auto;
+            max-width: 300px;
+            padding: 5px 0;
+        }
+
+        .page-number {
+            min-width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-default);
+            border-radius: 4px;
+            background: white;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .page-number:hover {
+            background: var(--secondary-light-gray);
+        }
+
+        .page-number.active {
+            background: var(--primary-blue);
+            color: white;
+            border-color: var(--primary-blue);
         }
 
         /* MODALES */
@@ -450,6 +521,42 @@
             outline: none;
             border-color: var(--primary-blue);
             background: #fff;
+        }
+
+        /* Búsqueda en expedientes */
+        .expediente-search-container {
+            position: relative;
+        }
+
+        .expediente-search-input {
+            margin-bottom: 8px;
+        }
+
+        .expediente-list {
+            max-height: 150px;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            display: none;
+            position: absolute;
+            background: white;
+            width: 100%;
+            z-index: 10;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .expediente-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .expediente-item:hover {
+            background-color: #f5f5f5;
+        }
+
+        .expediente-item:last-child {
+            border-bottom: none;
         }
 
         /* Estilos para el modal de ver detalles */
@@ -602,6 +709,10 @@
                 min-width: auto;
                 margin-bottom: 5px;
             }
+
+            .pagination-numbers {
+                max-width: 100%;
+            }
         }
 
         @media (max-width: 576px) {
@@ -634,6 +745,16 @@
             .nav-button {
                 padding: var(--spacing-xs);
                 font-size: 0.7rem;
+            }
+
+            .action-buttons-table {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn-icon {
+                width: 28px;
+                height: 28px;
             }
         }
     </style>
@@ -773,11 +894,13 @@
                             <label class="form-label">Dirección</label>
                             <input type="text" class="form-control" id="proteccionDireccion">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group expediente-search-container">
                             <label class="form-label">Expediente de referencia</label>
-                            <select class="form-select" id="proteccionExpediente">
+                            <input type="text" class="form-control expediente-search-input" id="proteccionExpedienteSearch" placeholder="Buscar expediente...">
+                            <select class="form-select" id="proteccionExpediente" style="display:none;">
                                 <option value="">Seleccionar expediente...</option>
                             </select>
+                            <div class="expediente-list" id="proteccionExpedienteList"></div>
                             <span id="proteccionExpedienteInfo" class="text-muted" style="font-size: 0.8rem;"></span>
                         </div>
                         <div class="form-group" style="grid-column: 1 / -1;">
@@ -856,11 +979,13 @@
                             <label class="form-label">Teléfono</label>
                             <input type="tel" class="form-control" id="capacidadTelefono">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group expediente-search-container">
                             <label class="form-label">Expediente de referencia</label>
-                            <select class="form-select" id="capacidadExpediente">
+                            <input type="text" class="form-control expediente-search-input" id="capacidadExpedienteSearch" placeholder="Buscar expediente...">
+                            <select class="form-select" id="capacidadExpediente" style="display:none;">
                                 <option value="">Seleccionar expediente...</option>
                             </select>
+                            <div class="expediente-list" id="capacidadExpedienteList"></div>
                             <span id="capacidadExpedienteInfo" class="text-muted" style="font-size: 0.8rem;"></span>
                         </div>
                         <div class="form-group" style="grid-column: 1 / -1;">
@@ -939,11 +1064,13 @@
                             <label class="form-label">Teléfono</label>
                             <input type="tel" class="form-control" id="restriccionTelefono">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group expediente-search-container">
                             <label class="form-label">Expediente de referencia</label>
-                            <select class="form-select" id="restriccionExpediente">
+                            <input type="text" class="form-control expediente-search-input" id="restriccionExpedienteSearch" placeholder="Buscar expediente...">
+                            <select class="form-select" id="restriccionExpediente" style="display:none;">
                                 <option value="">Seleccionar expediente...</option>
                             </select>
+                            <div class="expediente-list" id="restriccionExpedienteList"></div>
                             <span id="restriccionExpedienteInfo" class="text-muted" style="font-size: 0.8rem;"></span>
                         </div>
                         <div class="form-group" style="grid-column: 1 / -1;">
@@ -1022,11 +1149,13 @@
                             <label class="form-label">Teléfono</label>
                             <input type="tel" class="form-control" id="internacionTelefono">
                         </div>
-                        <div class="form-group">
+                        <div class="form-group expediente-search-container">
                             <label class="form-label">Expediente de referencia</label>
-                            <select class="form-select" id="internacionExpediente">
+                            <input type="text" class="form-control expediente-search-input" id="internacionExpedienteSearch" placeholder="Buscar expediente...">
+                            <select class="form-select" id="internacionExpediente" style="display:none;">
                                 <option value="">Seleccionar expediente...</option>
                             </select>
+                            <div class="expediente-list" id="internacionExpedienteList"></div>
                             <span id="internacionExpedienteInfo" class="text-muted" style="font-size: 0.8rem;"></span>
                         </div>
                         <div class="form-group" style="grid-column: 1 / -1;">
@@ -1127,7 +1256,7 @@
         let isEditing = false;
         let currentEditType = null;
         let paginaActual = 1;
-        const recordsPerPage = 10;
+        const recordsPerPage = 5; // Cambiado a 5 registros por página
         let registroActual = null;
         
         // Organismos por defecto
@@ -1179,11 +1308,98 @@
             // Configurar checkboxes para agregar nuevos organismos
             setupOrganismoCheckboxes();
             
-            // Eventos para mostrar la info del expediente
-            document.getElementById('proteccionExpediente').addEventListener('change', (e) => showExpedienteInfo('proteccion', e.target.value));
-            document.getElementById('capacidadExpediente').addEventListener('change', (e) => showExpedienteInfo('capacidad', e.target.value));
-            document.getElementById('restriccionExpediente').addEventListener('change', (e) => showExpedienteInfo('restriccion', e.target.value));
-            document.getElementById('internacionExpediente').addEventListener('change', (e) => showExpedienteInfo('internacion', e.target.value));
+            // Configurar búsqueda en expedientes
+            setupExpedienteSearch();
+        }
+        
+        // Configurar búsqueda en expedientes
+        function setupExpedienteSearch() {
+            const tipos = ['proteccion', 'capacidad', 'restriccion', 'internacion'];
+            
+            tipos.forEach(tipo => {
+                const searchInput = document.getElementById(`${tipo}ExpedienteSearch`);
+                const expedienteList = document.getElementById(`${tipo}ExpedienteList`);
+                const expedienteSelect = document.getElementById(`${tipo}Expediente`);
+                const infoSpan = document.getElementById(`${tipo}ExpedienteInfo`);
+                
+                if (searchInput) {
+                    // Mostrar lista al enfocar
+                    searchInput.addEventListener('focus', function() {
+                        filtrarExpedientes(tipo, this.value);
+                        expedienteList.style.display = 'block';
+                    });
+                    
+                    // Filtrar expedientes al escribir
+                    searchInput.addEventListener('input', function() {
+                        filtrarExpedientes(tipo, this.value);
+                        expedienteList.style.display = 'block';
+                    });
+                    
+                    // Ocultar lista al perder el foco (con un pequeño retraso para permitir clics)
+                    searchInput.addEventListener('blur', function() {
+                        setTimeout(() => {
+                            expedienteList.style.display = 'none';
+                        }, 200);
+                    });
+                }
+                
+                // Manejar clic en un elemento de la lista
+                if (expedienteList) {
+                    expedienteList.addEventListener('click', function(e) {
+                        if (e.target.classList.contains('expediente-item')) {
+                            const numCausa = e.target.getAttribute('data-value');
+                            searchInput.value = e.target.textContent;
+                            expedienteSelect.value = numCausa;
+                            expedienteList.style.display = 'none';
+                            
+                            // Mostrar información del expediente
+                            if (numCausa && expedientesIndex[numCausa]) {
+                                const expediente = expedientesIndex[numCausa];
+                                infoSpan.textContent = `Carátula: ${expediente.caratula}`;
+                            } else {
+                                infoSpan.textContent = '';
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        
+        // Filtrar expedientes para búsqueda
+        function filtrarExpedientes(tipo, query) {
+            const expedienteList = document.getElementById(`${tipo}ExpedienteList`);
+            if (!expedienteList) return;
+            
+            expedienteList.innerHTML = '';
+            
+            if (!query) {
+                // Mostrar todos los expedientes si no hay consulta
+                Object.keys(expedientesIndex).forEach(numCausa => {
+                    const expediente = expedientesIndex[numCausa];
+                    const optionText = `${numCausa} - ${expediente.caratula || 'Sin carátula'}`;
+                    const item = document.createElement('div');
+                    item.className = 'expediente-item';
+                    item.setAttribute('data-value', numCausa);
+                    item.textContent = optionText;
+                    expedienteList.appendChild(item);
+                });
+            } else {
+                // Filtrar expedientes por consulta
+                const queryLower = query.toLowerCase();
+                Object.keys(expedientesIndex).forEach(numCausa => {
+                    const expediente = expedientesIndex[numCausa];
+                    const optionText = `${numCausa} - ${expediente.caratula || 'Sin carátula'}`;
+                    
+                    if (numCausa.toLowerCase().includes(queryLower) || 
+                        (expediente.caratula && expediente.caratula.toLowerCase().includes(queryLower))) {
+                        const item = document.createElement('div');
+                        item.className = 'expediente-item';
+                        item.setAttribute('data-value', numCausa);
+                        item.textContent = optionText;
+                        expedienteList.appendChild(item);
+                    }
+                });
+            }
         }
         
         // Funciones de carga de datos
@@ -1226,16 +1442,6 @@
             } catch (e) {
                 console.error("Error al cargar expedientes: ", e);
                 mostrarAlertaFlotante("Error al cargar expedientes. Verifica tu configuración de Firebase.", 'danger');
-            }
-        }
-        
-        function showExpedienteInfo(tipo, numCausa) {
-            const infoSpan = document.getElementById(`${tipo}ExpedienteInfo`);
-            if (numCausa && expedientesIndex[numCausa]) {
-                const expediente = expedientesIndex[numCausa];
-                infoSpan.textContent = `Carátula: ${expediente.caratula}`;
-            } else {
-                infoSpan.textContent = '';
             }
         }
         
@@ -1422,9 +1628,14 @@
                         <td><span class="estado-pill ${estadoClase}">${registro.estado || "Abierto"}</span></td>
                         <td>${formatearFecha(registro.fecha, false)}</td>
                         <td class="actions">
-                            <button class="button button-info ver-detalles" data-id="${registro.id}" title="Ver">Ver</button>
-                            <button class="button editar-detalles" data-id="${registro.id}" title="Editar">Editar</button>
-                            <button class="button button-danger eliminar-detalles" data-id="${registro.id}" title="Eliminar">Eliminar</button>
+                            <div class="action-buttons-table">
+                                <button class="btn-icon btn-view ver-detalles" data-id="${registro.id}" title="Ver">
+                                    <i class="bi bi-eye"></i>
+                                </button>
+                                <button class="btn-icon btn-edit editar-detalles" data-id="${registro.id}" title="Editar">
+                                    <i class="bi bi-pencil"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                 `);
@@ -1433,35 +1644,73 @@
             // Asignar eventos a los botones
             document.querySelectorAll(".ver-detalles").forEach(b => b.onclick = () => verRegistro(b.dataset.id));
             document.querySelectorAll(".editar-detalles").forEach(b => b.onclick = () => editarRegistro(b.dataset.id));
-            document.querySelectorAll(".eliminar-detalles").forEach(b => b.onclick = () => eliminarRegistro(b.dataset.id));
         }
         
         // PAGINACIÓN: Render y Controles
         function renderPaginacion(totalRecords, recordsOnPage) {
             const container = document.getElementById("paginacion-container");
             const totalPages = Math.ceil(totalRecords / recordsPerPage);
-            container.style.display = totalPages > 1 ? "flex" : "none";
+            
+            // No mostrar paginación si no hay registros
+            if (totalPages <= 1) {
+                container.style.display = "none";
+                return;
+            }
+            
+            container.style.display = "flex";
+            
+            // Generar números de página
+            let pageNumbersHTML = '';
+            for (let i = 1; i <= totalPages; i++) {
+                pageNumbersHTML += `
+                    <div class="page-number ${i === paginaActual ? 'active' : ''}" data-page="${i}">
+                        ${i}
+                    </div>
+                `;
+            }
+            
             container.innerHTML = `
                 <div class="page-info">
                     Página ${paginaActual} de ${totalPages} | Mostrando ${recordsOnPage} de ${totalRecords} registros
                 </div>
                 <div class="nav-buttons">
-                    <button id="btnPrevPage" class="button" ${paginaActual === 1 ? 'disabled' : ''}>Anterior</button>
-                    <button id="btnNextPage" class="button" ${paginaActual === totalPages ? 'disabled' : ''}>Siguiente</button>
+                    <button id="btnPrevPage" class="button" ${paginaActual === 1 ? 'disabled' : ''}>
+                        <i class="bi bi-chevron-left"></i> Anterior
+                    </button>
+                    <div class="pagination-numbers">
+                        ${pageNumbersHTML}
+                    </div>
+                    <button id="btnNextPage" class="button" ${paginaActual === totalPages ? 'disabled' : ''}>
+                        Siguiente <i class="bi bi-chevron-right"></i>
+                    </button>
                 </div>
             `;
 
+            // Eventos para botones de paginación
             document.getElementById("btnPrevPage").onclick = () => {
-                paginaActual--;
-                const datosFiltrados = filtrarDatos();
-                renderTablaPaginada(datosFiltrados);
+                if (paginaActual > 1) {
+                    paginaActual--;
+                    const datosFiltrados = filtrarDatos();
+                    renderTablaPaginada(datosFiltrados);
+                }
             };
 
             document.getElementById("btnNextPage").onclick = () => {
-                paginaActual++;
-                const datosFiltrados = filtrarDatos();
-                renderTablaPaginada(datosFiltrados);
+                if (paginaActual < totalPages) {
+                    paginaActual++;
+                    const datosFiltrados = filtrarDatos();
+                    renderTablaPaginada(datosFiltrados);
+                }
             };
+
+            // Eventos para números de página
+            document.querySelectorAll(".page-number").forEach(element => {
+                element.onclick = () => {
+                    paginaActual = parseInt(element.getAttribute('data-page'));
+                    const datosFiltrados = filtrarDatos();
+                    renderTablaPaginada(datosFiltrados);
+                };
+            });
         }
         
         // Funciones auxiliares
@@ -1614,19 +1863,6 @@
             }
         }
         
-        function eliminarRegistro(id) {
-            if (confirm("¿Estás seguro que deseas eliminar este registro? Esta acción es irreversible.")) {
-                database.ref('registros/' + id).remove()
-                .then(() => {
-                    mostrarAlertaFlotante('Registro eliminado exitosamente.', 'success');
-                })
-                .catch(error => {
-                    console.error("Error al eliminar:", error);
-                    mostrarAlertaFlotante('Error al eliminar el registro.', 'danger');
-                });
-            }
-        }
-        
         // Funciones auxiliares para tipos
         function getTipoClass(tipo) {
             const classes = {
@@ -1654,10 +1890,24 @@
             if (tipo === 'proteccion') {
                 document.getElementById(`${tipo}Direccion`).value = registro.direccion;
             }
+            
+            // Configurar expediente
             if (registro.expedienteReferencia) {
-                document.getElementById(`${tipo}Expediente`).value = registro.expedienteReferencia;
-                showExpedienteInfo(tipo, registro.expedienteReferencia);
+                const expedienteSelect = document.getElementById(`${tipo}Expediente`);
+                const expedienteSearch = document.getElementById(`${tipo}ExpedienteSearch`);
+                const infoSpan = document.getElementById(`${tipo}ExpedienteInfo`);
+                
+                if (expedienteSelect) expedienteSelect.value = registro.expedienteReferencia;
+                if (expedienteSearch && expedientesIndex[registro.expedienteReferencia]) {
+                    const expediente = expedientesIndex[registro.expedienteReferencia];
+                    expedienteSearch.value = `${registro.expedienteReferencia} - ${expediente.caratula || 'Sin carátula'}`;
+                }
+                if (infoSpan && expedientesIndex[registro.expedienteReferencia]) {
+                    const expediente = expedientesIndex[registro.expedienteReferencia];
+                    infoSpan.textContent = `Carátula: ${expediente.caratula}`;
+                }
             }
+            
             const descripcionId = tipo === 'proteccion' ? 'proteccionSituacion' :
                                   tipo === 'capacidad' ? 'capacidadMotivo' :
                                   tipo === 'restriccion' ? 'restriccionFundamentos' : 'internacionDiagnostico';
