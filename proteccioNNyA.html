@@ -3,10 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Protección de NNyA</title>
+  <title>Sistema de Protección de NNyA</title>
   
   <!-- Bootstrap 5 -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
   
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
@@ -105,8 +107,9 @@
     }
 
     .nav-button {
-        background-color: var(--background-card);
-        border: 1px solid var(--border-default);
+        background-color: var(--primary-blue);
+        color: var(--text-light);
+        border: none;
         border-radius: var(--border-radius-default);
         padding: var(--spacing-s) var(--spacing-m);
         text-align: center;
@@ -114,15 +117,17 @@
         transition: transform 0.2s, box-shadow 0.2s;
         cursor: pointer;
         text-decoration: none;
-        color: var(--text-primary);
         font-size: var(--body-regular-size);
         font-weight: var(--font-weight-semibold);
+        display: flex;
+        align-items: center;
+        gap: var(--spacing-xs);
     }
 
     .nav-button:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-        background-color: var(--primary-blue);
+        background-color: var(--primary-dark-blue);
         color: var(--text-light);
         text-decoration: none;
     }
@@ -364,7 +369,7 @@
     .estado-cerrado { background-color: var(--status-danger); }
 
     /* Paginación */
-    #paginacion-container {
+    .pagination-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -374,14 +379,74 @@
         border-radius: var(--border-radius-default);
         box-shadow: var(--shadow-subtle);
     }
-    #paginacion-container .page-info {
+    .pagination-container .page-info {
         font-size: var(--body-regular-size);
         color: var(--text-secondary);
         font-weight: var(--font-weight-semibold);
     }
-    #paginacion-container .nav-buttons {
+    .pagination-container .nav-buttons {
         display: flex;
         gap: var(--spacing-s);
+    }
+
+    /* Estilos para la paginación */
+    .pagination {
+        display: flex;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 5px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .page-item {
+        margin: 0;
+    }
+    
+    .page-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 40px;
+        height: 40px;
+        padding: 0 12px;
+        border: 1px solid var(--border-default);
+        background-color: var(--background-default);
+        color: var(--text-primary);
+        text-decoration: none;
+        border-radius: var(--border-radius-default);
+        font-size: var(--body-regular-size);
+        font-weight: var(--font-weight-semibold);
+        transition: all 0.2s;
+        cursor: pointer;
+    }
+    
+    .page-link:hover {
+        background-color: var(--secondary-light-gray);
+        border-color: var(--primary-blue);
+        color: var(--primary-blue);
+    }
+    
+    .page-item.active .page-link {
+        background-color: var(--primary-blue);
+        border-color: var(--primary-blue);
+        color: var(--text-light);
+    }
+    
+    .page-item.disabled .page-link {
+        color: var(--secondary-dark-gray);
+        background-color: var(--secondary-light-gray);
+        border-color: var(--border-default);
+        cursor: not-allowed;
+    }
+    
+    .pagination-info {
+        display: flex;
+        align-items: center;
+        font-size: var(--body-regular-size);
+        color: var(--text-secondary);
+        margin-right: var(--spacing-m);
     }
 
     /* MODALES */
@@ -529,6 +594,91 @@
         padding: var(--spacing-m) 0;
     }
 
+    /* Iconos de acciones */
+    .action-icons {
+        display: flex;
+        gap: 8px;
+    }
+    
+    .icon-btn {
+        background: none;
+        border: none;
+        padding: 6px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .icon-btn.edit {
+        color: var(--status-info);
+    }
+    
+    .icon-btn.view {
+        color: var(--status-success);
+    }
+    
+    .icon-btn:hover {
+        background-color: var(--secondary-light-gray);
+    }
+
+    /* Mejoras para el modal de registro */
+    .modal-tab-content {
+        max-height: 60vh;
+        overflow-y: auto;
+        padding: 10px;
+    }
+    
+    .form-section {
+        margin-bottom: 20px;
+        padding: 15px;
+        border-radius: 8px;
+        background-color: #f8f9fa;
+    }
+    
+    .form-section h5 {
+        color: var(--primary-blue);
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #dee2e6;
+    }
+
+    /* Estilos para búsqueda de expedientes */
+    .expediente-search-container {
+        position: relative;
+    }
+    
+    .expediente-search-results {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 1px solid #ddd;
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 10;
+        display: none;
+    }
+    
+    .expediente-search-result {
+        padding: 8px 12px;
+        cursor: pointer;
+        border-bottom: 1px solid #eee;
+    }
+    
+    .expediente-search-result:hover {
+        background-color: #f0f0f0;
+    }
+    
+    .expediente-search-result:last-child {
+        border-bottom: none;
+    }
+
     /* Responsive */
     @media (max-width: 1024px) {
         .container {
@@ -588,7 +738,7 @@
             min-width: auto;
         }
         
-        #paginacion-container {
+        .pagination-container {
             flex-direction: column;
             gap: var(--spacing-m);
             text-align: center;
@@ -623,6 +773,17 @@
             min-width: auto;
             margin-bottom: 5px;
         }
+        
+        .pagination {
+            gap: 3px;
+        }
+        
+        .page-link {
+            min-width: 35px;
+            height: 35px;
+            padding: 0 8px;
+            font-size: var(--caption-size);
+        }
     }
 
     @media (max-width: 576px) {
@@ -656,6 +817,17 @@
             padding: var(--spacing-xs);
             font-size: 0.7rem;
         }
+        
+        .pagination {
+            gap: 2px;
+        }
+        
+        .page-link {
+            min-width: 30px;
+            height: 30px;
+            padding: 0 6px;
+            font-size: 0.7rem;
+        }
     }
   </style>
 </head>
@@ -668,9 +840,9 @@
         <div class="header-content">
             <div class="logo">Sistema de Protección de NNyA</div>
             <div class="nav-menu">
-                <a class="nav-button" onclick="showTab('inicio')">Inicio</a>
-                <a class="nav-button" onclick="showTab('casos')">Casos Registrados</a>
-                <a class="nav-button" data-bs-toggle="modal" data-bs-target="#registroModal">Nuevo Caso</a>
+                <a class="nav-button" data-bs-toggle="modal" data-bs-target="#registroModal" onclick="limpiarFormulario()">
+                    <i class="bi bi-plus-circle"></i> Nuevo registro
+                </a>
             </div>
         </div>
     </header>
@@ -697,10 +869,12 @@
         </div>
 
         <!-- Pestaña Casos Registrados -->
-        <div id="casos" class="tab-content">
+        <div id="casos" class="tab-content active">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--spacing-m);">
                 <h2>Casos Registrados</h2>
-                <button class="button button-success" onclick="imprimirSeccion('casos')">Imprimir listado</button>
+                <button class="button button-success" onclick="imprimirTablaCasos()">
+                    <i class="bi bi-printer"></i> Imprimir listado
+                </button>
             </div>
 
             <!-- Filtros -->
@@ -730,6 +904,18 @@
                     <div id="tablaCasos"></div>
                 </div>
             </section>
+            
+            <!-- Controles de paginación -->
+            <div id="paginacion-container" class="pagination-container">
+                <div class="pagination-info" id="paginacion-info">
+                    Mostrando 0 de 0 casos
+                </div>
+                <nav aria-label="Navegación de páginas">
+                    <ul class="pagination" id="paginacion">
+                        <!-- Los elementos de paginación se generarán aquí -->
+                    </ul>
+                </nav>
+            </div>
         </div>
     </main>
 
@@ -738,341 +924,386 @@
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title" id="registroModalLabel">Nuevo Caso</h2>
+                    <h2 class="modal-title" id="registroModalLabel">
+                        <i class="bi bi-person-plus"></i> Nuevo Registro
+                    </h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body modal-tab-content">
                     <ul class="nav nav-tabs" id="myTab" role="tablist">
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link active" id="modulo1-tab" data-bs-toggle="tab" data-bs-target="#modulo1" type="button" role="tab" aria-controls="modulo1" aria-selected="true">Datos del NNA</button>
+                            <button class="nav-link active" id="modulo1-tab" data-bs-toggle="tab" data-bs-target="#modulo1" type="button" role="tab" aria-controls="modulo1" aria-selected="true">
+                                <i class="bi bi-person"></i> Datos del NNA
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="modulo2-tab" data-bs-toggle="tab" data-bs-target="#modulo2" type="button" role="tab" aria-controls="modulo2" aria-selected="false">Medida y Acogimiento</button>
+                            <button class="nav-link" id="modulo2-tab" data-bs-toggle="tab" data-bs-target="#modulo2" type="button" role="tab" aria-controls="modulo2" aria-selected="false">
+                                <i class="bi bi-house"></i> Medida y Acogimiento
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="modulo3-tab" data-bs-toggle="tab" data-bs-target="#modulo3" type="button" role="tab" aria-controls="modulo3" aria-selected="false">Información Adicional</button>
+                            <button class="nav-link" id="modulo3-tab" data-bs-toggle="tab" data-bs-target="#modulo3" type="button" role="tab" aria-controls="modulo3" aria-selected="false">
+                                <i class="bi bi-info-circle"></i> Información Adicional
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="modulo4-tab" data-bs-toggle="tab" data-bs-target="#modulo4" type="button" role="tab" aria-controls="modulo4" aria-selected="false">Información Familiar</button>
+                            <button class="nav-link" id="modulo4-tab" data-bs-toggle="tab" data-bs-target="#modulo4" type="button" role="tab" aria-controls="modulo4" aria-selected="false">
+                                <i class="bi bi-people"></i> Información Familiar
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="modulo5-tab" data-bs-toggle="tab" data-bs-target="#modulo5" type="button" role="tab" aria-controls="modulo5" aria-selected="false">Medidas y Seguimiento</button>
+                            <button class="nav-link" id="modulo5-tab" data-bs-toggle="tab" data-bs-target="#modulo5" type="button" role="tab" aria-controls="modulo5" aria-selected="false">
+                                <i class="bi bi-shield-check"></i> Medidas y Seguimiento
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="modulo6-tab" data-bs-toggle="tab" data-bs-target="#modulo6" type="button" role="tab" aria-controls="modulo6" aria-selected="false">Garantías Procesales</button>
+                            <button class="nav-link" id="modulo6-tab" data-bs-toggle="tab" data-bs-target="#modulo6" type="button" role="tab" aria-controls="modulo6" aria-selected="false">
+                                <i class="bi bi-briefcase"></i> Garantías Procesales
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="modulo7-tab" data-bs-toggle="tab" data-bs-target="#modulo7" type="button" role="tab" aria-controls="modulo7" aria-selected="false">Requisitos RUFAAFA</button>
+                            <button class="nav-link" id="modulo7-tab" data-bs-toggle="tab" data-bs-target="#modulo7" type="button" role="tab" aria-controls="modulo7" aria-selected="false">
+                                <i class="bi bi-clipboard-check"></i> Requisitos RUFAAFA
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="modulo8-tab" data-bs-toggle="tab" data-bs-target="#modulo8" type="button" role="tab" aria-controls="modulo8" aria-selected="false">Inhabilidades</button>
+                            <button class="nav-link" id="modulo8-tab" data-bs-toggle="tab" data-bs-target="#modulo8" type="button" role="tab" aria-controls="modulo8" aria-selected="false">
+                                <i class="bi bi-x-circle"></i> Inhabilidades
+                            </button>
                         </li>
                         <li class="nav-item" role="presentation">
-                            <button class="nav-link" id="modulo9-tab" data-bs-toggle="tab" data-bs-target="#modulo9" type="button" role="tab" aria-controls="modulo9" aria-selected="false">Expediente y Seguimiento</button>
+                            <button class="nav-link" id="modulo9-tab" data-bs-toggle="tab" data-bs-target="#modulo9" type="button" role="tab" aria-controls="modulo9" aria-selected="false">
+                                <i class="bi bi-folder"></i> Expediente y Seguimiento
+                            </button>
                         </li>
                     </ul>
                     <div class="tab-content" id="myTabContent">
                         <!-- Módulo 1 -->
                         <div class="tab-pane fade show active" id="modulo1" role="tabpanel" aria-labelledby="modulo1-tab">
-                            <form id="modulo1Form" class="form-grid">
-                                <legend>Datos del NNA (Ley II - N.º 36)</legend>
-                                <div class="form-group">
-                                    <label for="nombreNNA">Nombre *</label>
-                                    <input type="text" id="nombreNNA" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="dniNNA">DNI</label>
-                                    <input type="text" id="dniNNA" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="fechaNacimientoNNA">Fecha nac.</label>
-                                    <input type="date" id="fechaNacimientoNNA" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="generoNNA">Género</label>
-                                    <select id="generoNNA" class="form-control">
-                                        <option value=""></option>
-                                        <option>Masculino</option>
-                                        <option>Femenino</option>
-                                        <option>Otro</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="centroVida">Centro de vida (localidad/prov.)</label>
-                                    <input type="text" id="centroVida" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="vinculosFraternos">Vínculos fraternos preservados</label>
-                                    <select id="vinculosFraternos" class="form-control">
-                                        <option value=""></option>
-                                        <option>Sí</option>
-                                        <option>No</option>
-                                    </select>
-                                </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <label for="situacionVulneracion">Situación</label>
-                                    <textarea id="situacionVulneracion" class="form-control" rows="3"></textarea>
-                                </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <span id="edadNNAInfo" class="badge">Edad NNA: —</span>
-                                </div>
-                            </form>
+                            <div class="form-section">
+                                <h5>Datos del NNA (Ley II - N.º 36)</h5>
+                                <form id="modulo1Form" class="form-grid">
+                                    <div class="form-group">
+                                        <label for="nombreNNA">Nombre *</label>
+                                        <input type="text" id="nombreNNA" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dniNNA">DNI</label>
+                                        <input type="text" id="dniNNA" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fechaNacimientoNNA">Fecha nac.</label>
+                                        <input type="date" id="fechaNacimientoNNA" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="generoNNA">Género</label>
+                                        <select id="generoNNA" class="form-control">
+                                            <option value=""></option>
+                                            <option>Masculino</option>
+                                            <option>Femenino</option>
+                                            <option>Otro</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="centroVida">Centro de vida (localidad/prov.)</label>
+                                        <input type="text" id="centroVida" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="vinculosFraternos">Vínculos fraternos preservados</label>
+                                        <select id="vinculosFraternos" class="form-control">
+                                            <option value=""></option>
+                                            <option>Sí</option>
+                                            <option>No</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <label for="situacionVulneracion">Situación</label>
+                                        <textarea id="situacionVulneracion" class="form-control" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <span id="edadNNAInfo" class="badge">Edad NNA: —</span>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <!-- Módulo 2 -->
                         <div class="tab-pane fade" id="modulo2" role="tabpanel" aria-labelledby="modulo2-tab">
-                            <form id="modulo2Form" class="form-grid">
-                                <legend>Medida y Acogimiento (Ley II - N.º 36)</legend>
-                                <div class="form-group">
-                                    <label for="tipoMedida">Tipo de medida excepcional</label>
-                                    <select id="tipoMedida" class="form-control">
-                                        <option value=""></option>
-                                        <option>Administrativa con intervención judicial</option>
-                                        <option>Judicial</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="autoridadInterviniente">Autoridad interviniente</label>
-                                    <input type="text" id="autoridadInterviniente" class="form-control" placeholder="Órgano/juzgado/área">
-                                </div>
-                                <div class="form-group">
-                                    <label for="fechaMedida">Fecha de la medida</label>
-                                    <input type="date" id="fechaMedida" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="fechaIngresoSAF">Fecha de ingreso al SAF</label>
-                                    <input type="date" id="fechaIngresoSAF" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="tipoFamilia">Tipo de familia de acogimiento</label>
-                                    <select id="tipoFamilia" class="form-control">
-                                        <option value=""></option>
-                                        <option>Alternativa</option>
-                                        <option>Inmediata (≤ 10 días)</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="rufAAFA">RUFAAFA (N° registro)</label>
-                                    <input type="text" id="rufAAFA" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="faNombre">Referente de familia de acogimiento</label>
-                                    <input type="text" id="faNombre" class="form-control" placeholder="Nombre y apellido">
-                                </div>
-                                <div class="form-group">
-                                    <label for="faDni">DNI referente</label>
-                                    <input type="text" id="faDni" class="form-control" placeholder="Documento">
-                                </div>
-                                <div class="form-group">
-                                    <label for="faFechaNac">Fecha nac. referente</label>
-                                    <input type="date" id="faFechaNac" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="faContacto">Contacto (tel/correo)</label>
-                                    <input type="text" id="faContacto" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="faDomicilio">Domicilio familia de acogimiento</label>
-                                    <input type="text" id="faDomicilio" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="faResidenciaAnos">Años de residencia en Misiones</label>
-                                    <input type="number" min="0" step="1" id="faResidenciaAnos" class="form-control" placeholder="Ej: 3">
-                                </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <span id="edadFAInfo" class="badge">Edad referente: —</span>
-                                    <span id="difEdadInfo" class="badge">Diferencia con NNA: —</span>
-                                    <span id="residenciaInfo" class="badge">Residencia: —</span>
-                                </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <label>Etapa del proceso (Art. 14)</label>
-                                    <div class="chips">
-                                        <label class="chip"><input type="checkbox" id="etapaConvocatoria"> Convocatoria</label>
-                                        <label class="chip"><input type="checkbox" id="etapaEvaluacion"> Evaluación y selección</label>
-                                        <label class="chip"><input type="checkbox" id="etapaCapacitacion"> Capacitación</label>
-                                        <label class="chip"><input type="checkbox" id="etapaInscripcion"> Inscripción RUFAAFA</label>
-                                        <label class="chip"><input type="checkbox" id="etapaPlan"> Plan de intervención</label>
+                            <div class="form-section">
+                                <h5>Medida y Acogimiento (Ley II - N.º 36)</h5>
+                                <form id="modulo2Form" class="form-grid">
+                                    <div class="form-group">
+                                        <label for="tipoMedida">Tipo de medida excepcional</label>
+                                        <select id="tipoMedida" class="form-control">
+                                            <option value=""></option>
+                                            <option>Administrativa con intervención judicial</option>
+                                            <option>Judicial</option>
+                                        </select>
                                     </div>
-                                </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <label for="planIntervencion">Plan de intervención</label>
-                                    <textarea id="planIntervencion" class="form-control" placeholder="Objetivos, acciones, roles (Art.14.5)" rows="3"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="causalEgreso">Egreso (si aplica)</label>
-                                    <select id="causalEgreso" class="form-control">
-                                        <option value=""></option>
-                                        <option>Revinculación con familia de origen</option>
-                                        <option>Vinculación con familia extensa</option>
-                                        <option>Adoptabilidad y guarda con fines de adopción</option>
-                                        <option>Mayoría de edad</option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="fechaEgreso">Fecha de egreso</label>
-                                    <input type="date" id="fechaEgreso" class="form-control">
-                                </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <label for="obsDerechos">Observaciones sobre derecho a ser oído / identidad / integridad</label>
-                                    <textarea id="obsDerechos" class="form-control" placeholder="Registro de escucha activa, identidad y resguardo (Art. 4)" rows="3"></textarea>
-                                </div>
-                            </form>
+                                    <div class="form-group">
+                                        <label for="autoridadInterviniente">Autoridad interviniente</label>
+                                        <input type="text" id="autoridadInterviniente" class="form-control" placeholder="Órgano/juzgado/área">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fechaMedida">Fecha de la medida</label>
+                                        <input type="date" id="fechaMedida" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fechaIngresoSAF">Fecha de ingreso al SAF</label>
+                                        <input type="date" id="fechaIngresoSAF" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="tipoFamilia">Tipo de familia de acogimiento</label>
+                                        <select id="tipoFamilia" class="form-control">
+                                            <option value=""></option>
+                                            <option>Alternativa</option>
+                                            <option>Inmediata (≤ 10 días)</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="rufAAFA">RUFAAFA (N° registro)</label>
+                                        <input type="text" id="rufAAFA" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="faNombre">Referente de familia de acogimiento</label>
+                                        <input type="text" id="faNombre" class="form-control" placeholder="Nombre y apellido">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="faDni">DNI referente</label>
+                                        <input type="text" id="faDni" class="form-control" placeholder="Documento">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="faFechaNac">Fecha nac. referente</label>
+                                        <input type="date" id="faFechaNac" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="faContacto">Contacto (tel/correo)</label>
+                                        <input type="text" id="faContacto" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="faDomicilio">Domicilio familia de acogimiento</label>
+                                        <input type="text" id="faDomicilio" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="faResidenciaAnos">Años de residencia en Misiones</label>
+                                        <input type="number" min="0" step="1" id="faResidenciaAnos" class="form-control" placeholder="Ej: 3">
+                                    </div>
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <span id="edadFAInfo" class="badge">Edad referente: —</span>
+                                        <span id="difEdadInfo" class="badge">Diferencia con NNA: —</span>
+                                        <span id="residenciaInfo" class="badge">Residencia: —</span>
+                                    </div>
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <label>Etapa del proceso (Art. 14)</label>
+                                        <div class="chips">
+                                            <label class="chip"><input type="checkbox" id="etapaConvocatoria"> Convocatoria</label>
+                                            <label class="chip"><input type="checkbox" id="etapaEvaluacion"> Evaluación y selección</label>
+                                            <label class="chip"><input type="checkbox" id="etapaCapacitacion"> Capacitación</label>
+                                            <label class="chip"><input type="checkbox" id="etapaInscripcion"> Inscripción RUFAAFA</label>
+                                            <label class="chip"><input type="checkbox" id="etapaPlan"> Plan de intervención</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <label for="planIntervencion">Plan de intervención</label>
+                                        <textarea id="planIntervencion" class="form-control" placeholder="Objetivos, acciones, roles (Art.14.5)" rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="causalEgreso">Egreso (si aplica)</label>
+                                        <select id="causalEgreso" class="form-control">
+                                            <option value=""></option>
+                                            <option>Revinculación con familia de origen</option>
+                                            <option>Vinculación con familia extensa</option>
+                                            <option>Adoptabilidad y guarda con fines de adopción</option>
+                                            <option>Mayoría de edad</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fechaEgreso">Fecha de egreso</label>
+                                        <input type="date" id="fechaEgreso" class="form-control">
+                                    </div>
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <label for="obsDerechos">Observaciones sobre derecho a ser oído / identidad / integridad</label>
+                                        <textarea id="obsDerechos" class="form-control" placeholder="Registro de escucha activa, identidad y resguardo (Art. 4)" rows="3"></textarea>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <!-- Módulo 3 -->
                         <div class="tab-pane fade" id="modulo3" role="tabpanel" aria-labelledby="modulo3-tab">
-                            <form id="modulo3Form" class="form-grid">
-                                <legend>Información Adicional (Ley II - N.º 16)</legend>
-                                <div class="form-group">
-                                    <label for="nombreCompletoNNA">Nombre Completo del NNA *</label>
-                                    <input type="text" id="nombreCompletoNNA" class="form-control" required>
-                                </div>
-                                <div class="form-group">
-                                    <label for="nacionalidadNNA">Nacionalidad</label>
-                                    <input type="text" id="nacionalidadNNA" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="identidadCulturalNNA">Identidad cultural / Idioma de origen</label>
-                                    <input type="text" id="identidadCulturalNNA" class="form-control">
-                                </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <label for="opinionNNA">Opinión del NNA</label>
-                                    <textarea id="opinionNNA" class="form-control" placeholder="Registrar la opinión y deseos del menor sobre el caso." rows="3"></textarea>
-                                </div>
-                            </form>
+                            <div class="form-section">
+                                <h5>Información Adicional (Ley II - N.º 16)</h5>
+                                <form id="modulo3Form" class="form-grid">
+                                    <div class="form-group">
+                                        <label for="nombreCompletoNNA">Nombre Completo del NNA *</label>
+                                        <input type="text" id="nombreCompletoNNA" class="form-control" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nacionalidadNNA">Nacionalidad</label>
+                                        <input type="text" id="nacionalidadNNA" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="identidadCulturalNNA">Identidad cultural / Idioma de origen</label>
+                                        <input type="text" id="identidadCulturalNNA" class="form-control">
+                                    </div>
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <label for="opinionNNA">Opinión del NNA</label>
+                                        <textarea id="opinionNNA" class="form-control" placeholder="Registrar la opinión y deseos del menor sobre el caso." rows="3"></textarea>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <!-- Módulo 4 -->
                         <div class="tab-pane fade" id="modulo4" role="tabpanel" aria-labelledby="modulo4-tab">
-                            <form id="modulo4Form" class="form-grid">
-                                <legend>Información Familiar (Ley II - N.º 16)</legend>
-                                <div class="form-group">
-                                    <label for="nombreMadre">Nombre de la madre</label>
-                                    <input type="text" id="nombreMadre" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="nombrePadre">Nombre del padre</label>
-                                    <input type="text" id="nombrePadre" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="vinculoFamiliar">Estado del Vínculo Familiar</label>
-                                    <select id="vinculoFamiliar" class="form-control">
-                                        <option value=""></option>
-                                        <option>Grupo Familiar de Origen</option>
-                                        <option>Familia Ampliada</option>
-                                        <option>Hogar Alternativo</option>
-                                    </select>
-                                </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <label for="obsFamilia">Observaciones familiares</label>
-                                    <textarea id="obsFamilia" class="form-control" placeholder="Detalles de la convivencia, etc." rows="3"></textarea>
-                                </div>
-                            </form>
+                            <div class="form-section">
+                                <h5>Información Familiar (Ley II - N.º 16)</h5>
+                                <form id="modulo4Form" class="form-grid">
+                                    <div class="form-group">
+                                        <label for="nombreMadre">Nombre de la madre</label>
+                                        <input type="text" id="nombreMadre" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nombrePadre">Nombre del padre</label>
+                                        <input type="text" id="nombrePadre" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="vinculoFamiliar">Estado del Vínculo Familiar</label>
+                                        <select id="vinculoFamiliar" class="form-control">
+                                            <option value=""></option>
+                                            <option>Grupo Familiar de Origen</option>
+                                            <option>Familia Ampliada</option>
+                                            <option>Hogar Alternativo</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <label for="obsFamilia">Observaciones familiares</label>
+                                        <textarea id="obsFamilia" class="form-control" placeholder="Detalles de la convivencia, etc." rows="3"></textarea>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <!-- Módulo 5 -->
                         <div class="tab-pane fade" id="modulo5" role="tabpanel" aria-labelledby="modulo5-tab">
-                            <form id="modulo5Form" class="form-grid">
-                                <legend>Medidas de Protección y Seguimiento (Ley II - N.º 16)</legend>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <label>Medidas de Protección Aplicadas</label>
-                                    <div class="chips">
-                                        <label class="chip"><input type="checkbox" id="medidaGuiaAsistencia"> Guía y asistencia a la familia</label>
-                                        <label class="chip"><input type="checkbox" id="medidaAsistenciaSalud"> Asistencia a tratamientos médicos/psicológicos</label>
-                                        <label class="chip"><input type="checkbox" id="medidaInscripcionEscolar"> Apoyo para la inscripción escolar</label>
-                                        <label class="chip"><input type="checkbox" id="medidaExclusionAgresor"> Exclusión del agresor de la vivienda</label>
-                                        <label class="chip"><input type="checkbox" id="medidaOtros"> Otras medidas (especificar)</label>
+                            <div class="form-section">
+                                <h5>Medidas de Protección y Seguimiento (Ley II - N.º 16)</h5>
+                                <form id="modulo5Form" class="form-grid">
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <label>Medidas de Protección Aplicadas</label>
+                                        <div class="chips">
+                                            <label class="chip"><input type="checkbox" id="medidaGuiaAsistencia"> Guía y asistencia a la familia</label>
+                                            <label class="chip"><input type="checkbox" id="medidaAsistenciaSalud"> Asistencia a tratamientos médicos/psicológicos</label>
+                                            <label class="chip"><input type="checkbox" id="medidaInscripcionEscolar"> Apoyo para la inscripción escolar</label>
+                                            <label class="chip"><input type="checkbox" id="medidaExclusionAgresor"> Exclusión del agresor de la vivienda</label>
+                                            <label class="chip"><input type="checkbox" id="medidaOtros"> Otras medidas (especificar)</label>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <label for="obsMedida">Observaciones y Plazo de la Medida</label>
-                                    <textarea id="obsMedida" class="form-control" placeholder="Documentar la efectividad de la medida, su duración y las causas que la motivaron." rows="3"></textarea>
-                                </div>
-                            </form>
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <label for="obsMedida">Observaciones y Plazo de la Medida</label>
+                                        <textarea id="obsMedida" class="form-control" placeholder="Documentar la efectividad de la medida, su duración y las causas que la motivaron." rows="3"></textarea>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <!-- Módulo 6 -->
                         <div class="tab-pane fade" id="modulo6" role="tabpanel" aria-labelledby="modulo6-tab">
-                            <form id="modulo6Form" class="form-grid">
-                                <legend>Garantías Procesales (Ley II - N.º 16)</legend>
-                                <div class="form-group">
-                                    <label for="asistenciaLetrada">Asistencia Letrada (nombre del abogado)</label>
-                                    <input type="text" id="asistenciaLetrada" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label for="actoInfractor">Acto Infractor Atribuido</label>
-                                    <input type="text" id="actoInfractor" class="form-control">
-                                </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <label for="infoFamilia">Información a la familia</label>
-                                    <textarea id="infoFamilia" class="form-control" placeholder="Detalles sobre cómo y cuándo se informó a la familia sobre la situación." rows="3"></textarea>
-                                </div>
-                            </form>
+                            <div class="form-section">
+                                <h5>Garantías Procesales (Ley II - N.º 16)</h5>
+                                <form id="modulo6Form" class="form-grid">
+                                    <div class="form-group">
+                                        <label for="asistenciaLetrada">Asistencia Letrada (nombre del abogado)</label>
+                                        <input type="text" id="asistenciaLetrada" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="actoInfractor">Acto Infractor Atribuido</label>
+                                        <input type="text" id="actoInfractor" class="form-control">
+                                    </div>
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <label for="infoFamilia">Información a la familia</label>
+                                        <textarea id="infoFamilia" class="form-control" placeholder="Detalles sobre cómo y cuándo se informó a la familia sobre la situación." rows="3"></textarea>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <!-- Módulo 7 -->
                         <div class="tab-pane fade" id="modulo7" role="tabpanel" aria-labelledby="modulo7-tab">
-                            <form id="modulo7Form" class="form-grid">
-                                <legend>Requisitos RUFAAFA (Ley II - N.º 36)</legend>
-                                <div class="subgrid-3">
-                                    <label class="chip"><input type="checkbox" id="reqDomicilio"> Domicilio en Misiones (≥ 2 años)</label>
-                                    <label class="chip"><input type="checkbox" id="reqEdad"> Mayor de 25 años</label>
-                                    <label class="chip"><input type="checkbox" id="reqDiferenciaEdad"> Diferencia ≥ 15 años con el NNA</label>
-                                    <label class="chip"><input type="checkbox" id="reqPenales"> Cert. antecedentes penales</label>
-                                    <label class="chip"><input type="checkbox" id="reqAlimentaria"> Libre deuda alimentaria</label>
-                                    <label class="chip"><input type="checkbox" id="reqPsicofisico"> Aptitud psicofísica (sector público)</label>
-                                    <label class="chip"><input type="checkbox" id="reqIngresos"> Constancia/ DDJJ de ingresos</label>
-                                    <label class="chip"><input type="checkbox" id="reqVivienda"> Acredita vivienda (propia/locación)</label>
-                                    <label class="chip"><input type="checkbox" id="reqCapacitacion"> Capacitaciones realizadas</label>
-                                    <label class="chip"><input type="checkbox" id="reqAcuerdo"> Acuerdo de aceptación firmado</label>
-                                </div>
-                            </form>
+                            <div class="form-section">
+                                <h5>Requisitos RUFAAFA (Ley II - N.º 36)</h5>
+                                <form id="modulo7Form" class="form-grid">
+                                    <div class="subgrid-3">
+                                        <label class="chip"><input type="checkbox" id="reqDomicilio"> Domicilio en Misiones (≥ 2 años)</label>
+                                        <label class="chip"><input type="checkbox" id="reqEdad"> Mayor de 25 años</label>
+                                        <label class="chip"><input type="checkbox" id="reqDiferenciaEdad"> Diferencia ≥ 15 años con el NNA</label>
+                                        <label class="chip"><input type="checkbox" id="reqPenales"> Cert. antecedentes penales</label>
+                                        <label class="chip"><input type="checkbox" id="reqAlimentaria"> Libre deuda alimentaria</label>
+                                        <label class="chip"><input type="checkbox" id="reqPsicofisico"> Aptitud psicofísica (sector público)</label>
+                                        <label class="chip"><input type="checkbox" id="reqIngresos"> Constancia/ DDJJ de ingresos</label>
+                                        <label class="chip"><input type="checkbox" id="reqVivienda"> Acredita vivienda (propia/locación)</label>
+                                        <label class="chip"><input type="checkbox" id="reqCapacitacion"> Capacitaciones realizadas</label>
+                                        <label class="chip"><input type="checkbox" id="reqAcuerdo"> Acuerdo de aceptación firmado</label>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <!-- Módulo 8 -->
                         <div class="tab-pane fade" id="modulo8" role="tabpanel" aria-labelledby="modulo8-tab">
-                            <form id="modulo8Form" class="form-grid">
-                                <legend>Inhabilidades (Ley II - N.º 36)</legend>
-                                <div class="subgrid-3">
-                                    <label class="chip"><input type="checkbox" id="inhDelitos"> Sin condena por delitos dolosos</label>
-                                    <label class="chip"><input type="checkbox" id="inhMedidas"> Sin medidas cautelares vigentes (L. XIV-6 / IV-68)</label>
-                                    <label class="chip"><input type="checkbox" id="inhRespParental"> Sin privación/suspensión de resp. parental</label>
-                                    <label class="chip"><input type="checkbox" id="inhTutela"> Sin remoción de tutela por mal desempeño</label>
-                                </div>
-                            </form>
+                            <div class="form-section">
+                                <h5>Inhabilidades (Ley II - N.º 36)</h5>
+                                <form id="modulo8Form" class="form-grid">
+                                    <div class="subgrid-3">
+                                        <label class="chip"><input type="checkbox" id="inhDelitos"> Sin condena por delitos dolosos</label>
+                                        <label class="chip"><input type="checkbox" id="inhMedidas"> Sin medidas cautelares vigentes (L. XIV-6 / IV-68)</label>
+                                        <label class="chip"><input type="checkbox" id="inhRespParental"> Sin privación/suspensión de resp. parental</label>
+                                        <label class="chip"><input type="checkbox" id="inhTutela"> Sin remoción de tutela por mal desempeño</label>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                         <!-- Módulo 9 -->
                         <div class="tab-pane fade" id="modulo9" role="tabpanel" aria-labelledby="modulo9-tab">
-                            <form id="modulo9Form" class="form-grid">
-                                <legend>Expediente y Seguimiento</legend>
-                                <div class="form-group">
-                                    <label for="expedienteReferencia">Expediente de referencia</label>
-                                    <select id="expedienteReferencia" class="form-control">
-                                        <option value="">-- Seleccione --</option>
-                                    </select>
-                                    <small id="expedienteInfo" class="text-muted"></small>
-                                </div>
-                                <div class="form-group">
-                                    <label for="estadoCaso">Estado</label>
-                                    <select id="estadoCaso" class="form-control">
-                                        <option>Abierto</option>
-                                        <option>En Proceso</option>
-                                        <option>Cerrado</option>
-                                    </select>
-                                </div>
-                                <div class="form-group" style="grid-column: 1 / -1;">
-                                    <label for="seguimientoInicial">Seguimiento inicial</label>
-                                    <textarea id="seguimientoInicial" class="form-control" placeholder="Anote el primer seguimiento o acción..." rows="3"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="lugarInstitucionalizacion">Lugar de institucionalización</label>
-                                    <textarea id="lugarInstitucionalizacion" class="form-control" placeholder="Si corresponde" rows="2"></textarea>
-                                </div>
-                                <div class="form-group">
-                                    <label for="contactoInstitucionalizacion">Contacto institucionalizacion</label>
-                                    <textarea id="contactoInstitucionalizacion" class="form-control" placeholder="Si corresponde" rows="2"></textarea>
-                                </div>
-                            </form>
+                            <div class="form-section">
+                                <h5>Expediente y Seguimiento</h5>
+                                <form id="modulo9Form" class="form-grid">
+                                    <div class="form-group">
+                                        <label for="expedienteReferencia">Expediente de referencia</label>
+                                        <div class="expediente-search-container">
+                                            <input type="text" id="expedienteReferencia" class="form-control" placeholder="Escriba para buscar expediente..." oninput="filtrarExpedientes(this.value)">
+                                            <div class="expediente-search-results" id="expedienteSearchResults"></div>
+                                        </div>
+                                        <small id="expedienteInfo" class="text-muted"></small>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="estadoCaso">Estado</label>
+                                        <select id="estadoCaso" class="form-control">
+                                            <option>Abierto</option>
+                                            <option>En Proceso</option>
+                                            <option>Cerrado</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="grid-column: 1 / -1;">
+                                        <label for="seguimientoInicial">Seguimiento inicial</label>
+                                        <textarea id="seguimientoInicial" class="form-control" placeholder="Anote el primer seguimiento o acción..." rows="3"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lugarInstitucionalizacion">Lugar de institucionalización</label>
+                                        <textarea id="lugarInstitucionalizacion" class="form-control" placeholder="Si corresponde" rows="2"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contactoInstitucionalizacion">Contacto institucionalizacion</label>
+                                        <textarea id="contactoInstitucionalizacion" class="form-control" placeholder="Si corresponde" rows="2"></textarea>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="button button-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="button" class="button button-success" onclick="imprimirSeccion('registroModal')">Imprimir</button>
-                    <button type="button" class="button" onclick="guardarCaso()">Guardar Caso</button>
+                    <button type="button" class="button button-secondary" data-bs-dismiss="modal">
+                        <i class="bi bi-x-circle"></i> Cancelar
+                    </button>
+                    <button type="button" class="button button-success" onclick="imprimirSeccion('registroModal')">
+                        <i class="bi bi-printer"></i> Imprimir
+                    </button>
+                    <button type="button" class="button" onclick="guardarCaso()">
+                        <i class="bi bi-check-circle"></i> Guardar Caso
+                    </button>
                 </div>
             </div>
         </div>
@@ -1083,13 +1314,18 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title">Detalles del Caso</h2>
+                    <h2 class="modal-title">
+                        <i class="bi bi-eye"></i> Detalles del Caso
+                    </h2>
                 </div>
                 <div class="modal-body" id="modalCasoBody"></div>
                 <div class="controls-form">
-                    <button type="button" class="button button-secondary" onclick="cerrarModalCaso()">Cerrar</button>
-                    <button type="button" class="button button-success" onclick="imprimirSeccion('modalCasoBody')">Imprimir</button>
-                    <button type="button" class="button button-danger" onclick="eliminarCaso(casoActual?.id)">Eliminar Caso</button>
+                    <button type="button" class="button button-secondary" onclick="cerrarModalCaso()">
+                        <i class="bi bi-x-circle"></i> Cerrar
+                    </button>
+                    <button type="button" class="button button-success" onclick="imprimirSeccion('modalCasoBody')">
+                        <i class="bi bi-printer"></i> Imprimir
+                    </button>
                 </div>
             </div>
         </div>
@@ -1130,6 +1366,10 @@
         let casos=[], casosFiltrados=[], casoActual=null, editandoId=null, lastEditedId=null;
         let causasIndex = {};
         let tempCasoData = {};
+        
+        // Variables para paginación
+        let paginaActual = 1;
+        const casosPorPagina = 5;
 
         // ===== Refs DOM =====
         const searchInput=$('searchInput'), estadoFilter=$('estadoFilter'), tablaCasos=$('tablaCasos');
@@ -1210,27 +1450,73 @@
         // ===== Cargar expedientes desde Firestore =====
         async function cargarExpedientes() {
           const expedienteSelect = document.getElementById('expedienteReferencia');
-          expedienteSelect.innerHTML = "<option value=''>-- Cargando expedientes... --</option>";
           causasIndex = {};
           try {
             const querySnapshot = await getDocs(collection(db2, "causas"));
-            expedienteSelect.innerHTML = "<option value=''>-- Seleccione --</option>";
             
             querySnapshot.forEach((doc) => {
               const val = doc.data();
               if (val && val.numCausa) {
                 causasIndex[val.numCausa] = { ...val, firebaseId: doc.id };
-                const opt = document.createElement("option");
-                opt.value = val.numCausa;
-                opt.textContent = `Causa ${val.numCausa}` + (val.caratula ? ` – ${val.caratula}` : "");
-                expedienteSelect.appendChild(opt);
               }
             });
           } catch (error) {
             console.error("Error al cargar expedientes desde Firestore:", error);
-            expedienteSelect.innerHTML = "<option value=''>-- Error al cargar --</option>";
           }
         }
+
+        // ===== Función para filtrar expedientes =====
+        window.filtrarExpedientes = function(busqueda) {
+          const resultados = document.getElementById('expedienteSearchResults');
+          resultados.innerHTML = '';
+          
+          if (!busqueda) {
+            resultados.style.display = 'none';
+            return;
+          }
+          
+          const busquedaLower = busqueda.toLowerCase();
+          const expedientesFiltrados = Object.keys(causasIndex).filter(numCausa => {
+            const causa = causasIndex[numCausa];
+            const textoBusqueda = `Causa ${numCausa} ${causa.caratula || ''}`.toLowerCase();
+            return textoBusqueda.includes(busquedaLower);
+          });
+          
+          if (expedientesFiltrados.length === 0) {
+            resultados.innerHTML = '<div class="expediente-search-result">No se encontraron expedientes</div>';
+          } else {
+            expedientesFiltrados.forEach(numCausa => {
+              const causa = causasIndex[numCausa];
+              const div = document.createElement('div');
+              div.className = 'expediente-search-result';
+              div.textContent = `Causa ${numCausa}${causa.caratula ? ` – ${causa.caratula}` : ''}`;
+              div.onclick = function() {
+                document.getElementById('expedienteReferencia').value = numCausa;
+                resultados.style.display = 'none';
+              };
+              resultados.appendChild(div);
+            });
+          }
+          
+          resultados.style.display = 'block';
+        };
+
+        // ===== Limpiar formulario al abrir nuevo registro =====
+        window.limpiarFormulario = function() {
+          // Limpiar todos los formularios dentro del modal
+          const forms = document.querySelectorAll('#registroModal form');
+          forms.forEach(form => form.reset());
+          
+          // Limpiar datos temporales y estado de edición
+          tempCasoData = {};
+          editandoId = null;
+          
+          // Actualizar badges
+          updateBadges();
+          
+          // Limpiar resultados de búsqueda de expedientes
+          document.getElementById('expedienteSearchResults').style.display = 'none';
+        };
 
         // ===== Guardar / Actualizar caso (RTDB app1:/casos) =====
         window.guardarCaso = async (e)=>{
@@ -1362,7 +1648,6 @@
           tempCasoData = {};
           
           await cargarCasos();
-          showTab('casos');
         }
 
         // ===== Cargar casos (RTDB app1:/casos) =====
@@ -1384,6 +1669,7 @@
           casosFiltrados = casos
             .filter(c => (c.nombreNNA||"").toLowerCase().includes(q) || (c.dniNNA||"").includes(q))
             .filter(c => !est || c.estadoCaso===est);
+          paginaActual = 1; // Resetear a la primera página al aplicar filtros
           mostrarCasos();
         }
 
@@ -1393,13 +1679,30 @@
           return c ? (c.caratula || c.numCausa || "") : (numeroCausa || "");
         }
 
+        // ===== Mostrar casos con paginación =====
         function mostrarCasos(){
           if(!casosFiltrados.length){ 
             tablaCasos.innerHTML="<p style='padding: var(--spacing-m);'>No hay casos que coincidan con los filtros</p>"; 
+            document.getElementById('paginacion-container').style.display = 'none';
             return; 
           }
+          
+          document.getElementById('paginacion-container').style.display = 'flex';
+          
+          // Calcular índices para la paginación
+          const totalCasos = casosFiltrados.length;
+          const totalPaginas = Math.ceil(totalCasos / casosPorPagina);
+          const inicio = (paginaActual - 1) * casosPorPagina;
+          const fin = Math.min(inicio + casosPorPagina, totalCasos);
+          const casosPagina = casosFiltrados.slice(inicio, fin);
+          
+          // Actualizar información de paginación
+          document.getElementById('paginacion-info').textContent = 
+            `Mostrando ${inicio + 1}-${fin} de ${totalCasos} casos`;
+          
+          // Generar tabla con los casos de la página actual
           let h = "<table class='data-table'><thead><tr><th>Nombre</th><th>Estado</th><th>SAF</th><th>Expediente</th><th>Acciones</th></tr></thead><tbody>";
-          for(const c of casosFiltrados){
+          for(const c of casosPagina){
             const estadoClase = c.estadoCaso === 'Abierto' ? 'estado-abierto' : 
                               c.estadoCaso === 'En Proceso' ? 'estado-proceso' : 'estado-cerrado';
             const expTxt = c.expedienteReferencia ? getExpDisplay(c.expedienteReferencia) : "";
@@ -1410,16 +1713,22 @@
                     <td><span class="estado-pill ${estadoClase}">${c.estadoCaso||""}</span></td>
                     <td>${safBadge}</td>
                     <td>${expHtml}</td>
-                    <td class="actions">
-                      <button class="button button-info" onclick="editarCaso('${c.id}')">Editar</button>
-                      <button class="button" onclick="verCaso('${c.id}')">Ver</button>
-                      <button class="button button-danger" onclick="eliminarCaso('${c.id}')">Eliminar</button>
+                    <td class="action-icons">
+                      <button class="icon-btn edit" onclick="editarCaso('${c.id}')" title="Editar">
+                        <i class="bi bi-pencil-square"></i>
+                      </button>
+                      <button class="icon-btn view" onclick="verCaso('${c.id}')" title="Ver">
+                        <i class="bi bi-eye"></i>
+                      </button>
                     </td>
                   </tr>`;
           }
           h += "</tbody></table>";
           tablaCasos.innerHTML = h;
 
+          // Generar controles de paginación
+          generarPaginacion(totalPaginas);
+          
           if(lastEditedId){
             const row = document.getElementById('row-'+lastEditedId);
             if(row){ 
@@ -1432,6 +1741,53 @@
             lastEditedId = null;
           }
         }
+
+        // ===== Generar controles de paginación =====
+        function generarPaginacion(totalPaginas) {
+          const paginacion = document.getElementById('paginacion');
+          paginacion.innerHTML = '';
+          
+          // Botón anterior
+          const prevItem = document.createElement('li');
+          prevItem.className = `page-item ${paginaActual === 1 ? 'disabled' : ''}`;
+          prevItem.innerHTML = `<a class="page-link" href="#" onclick="cambiarPagina(${paginaActual - 1})" aria-label="Anterior">
+                                  <i class="bi bi-chevron-left"></i>
+                                </a>`;
+          paginacion.appendChild(prevItem);
+          
+          // Números de página
+          const paginasAMostrar = 5; // Máximo de páginas a mostrar en el paginador
+          let inicioPagina = Math.max(1, paginaActual - Math.floor(paginasAMostrar / 2));
+          let finPagina = Math.min(totalPaginas, inicioPagina + paginasAMostrar - 1);
+          
+          // Ajustar si estamos cerca del final
+          if (finPagina - inicioPagina + 1 < paginasAMostrar) {
+            inicioPagina = Math.max(1, finPagina - paginasAMostrar + 1);
+          }
+          
+          for (let i = inicioPagina; i <= finPagina; i++) {
+            const pageItem = document.createElement('li');
+            pageItem.className = `page-item ${i === paginaActual ? 'active' : ''}`;
+            pageItem.innerHTML = `<a class="page-link" href="#" onclick="cambiarPagina(${i})">${i}</a>`;
+            paginacion.appendChild(pageItem);
+          }
+          
+          // Botón siguiente
+          const nextItem = document.createElement('li');
+          nextItem.className = `page-item ${paginaActual === totalPaginas ? 'disabled' : ''}`;
+          nextItem.innerHTML = `<a class="page-link" href="#" onclick="cambiarPagina(${paginaActual + 1})" aria-label="Siguiente">
+                                  <i class="bi bi-chevron-right"></i>
+                                </a>`;
+          paginacion.appendChild(nextItem);
+        }
+
+        // ===== Cambiar de página =====
+        window.cambiarPagina = function(nuevaPagina) {
+          if (nuevaPagina >= 1 && nuevaPagina <= Math.ceil(casosFiltrados.length / casosPorPagina)) {
+            paginaActual = nuevaPagina;
+            mostrarCasos();
+          }
+        };
 
         function actualizarDashboard(){
           const total = casos.length;
@@ -1671,16 +2027,6 @@
           if (modal) modal.hide();
         };
 
-        window.eliminarCaso = async (id)=>{
-          const targetId = id || (casoActual && casoActual.id);
-          if(!targetId) return;
-          if(confirm("¿Estás seguro que deseas eliminar este caso? Esta acción es irreversible.")){
-            await remove(ref(rtdb1,"casos/"+targetId));
-            cerrarModalCaso();
-            await cargarCasos();
-          }
-        };
-
         // ===== Modal Expediente =====
         window.verExpediente = async (numeroCausa)=>{
           const causaDoc = Object.values(causasIndex).find(c => c.numCausa === numeroCausa);
@@ -1763,6 +2109,32 @@
           const w = window.open("", "_blank");
           const styles = document.querySelector('style')?.outerHTML || "";
           w.document.write(`<html><head><title>Imprimir</title>${styles}</head><body>${el.innerHTML}</body></html>`);
+          w.document.close();
+          w.focus();
+          w.print();
+        };
+
+        // ===== Imprimir solo la tabla de casos =====
+        window.imprimirTablaCasos = function() {
+          const tablaHTML = document.querySelector('#tablaCasos').innerHTML;
+          const w = window.open("", "_blank");
+          const styles = document.querySelector('style')?.outerHTML || "";
+          w.document.write(`
+            <html>
+              <head>
+                <title>Listado de Casos - Sistema de Protección de NNyA</title>
+                ${styles}
+                <style>
+                  body { padding: 20px; }
+                  h2 { text-align: center; margin-bottom: 20px; }
+                </style>
+              </head>
+              <body>
+                <h2>Listado de Casos Registrados</h2>
+                ${tablaHTML}
+              </body>
+            </html>
+          `);
           w.document.close();
           w.focus();
           w.print();
